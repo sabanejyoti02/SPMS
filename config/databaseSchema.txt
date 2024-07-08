@@ -1,0 +1,11 @@
+
+//Can be scaled later
+
+Entity - Student
+    PRN
+    Name
+
+Entity - Mentor
+    MentorID
+    MentorName
+    Mentees //array containing Student PRNs

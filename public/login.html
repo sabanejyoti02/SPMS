@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2>Test Token Login Form</h2>
+    <form action = "/api/v1/auth/login" method="POST">
+        <label for = "email" >Email</label>
+        <input type="text" name="email" required/><br>
+        <label for = "password">Password</label>
+        <input type="password" name="password" required/>
+        <br>
+       
+        <input type="submit" value="Submit"/>
+    </form>
+
+    <h1 id="message"></h1>
+    <h2>Login Form</h2>
+    <form id="loginForm" onsubmit="login(event)">
+        <label for="email">Username:</label><br>
+        <input type="text" id="email" name="email" required><br>
+        <label for="password">Password:</label><br>
+        <input type="password" id="password" name="password" required><br><br>
+        <button type="submit">Submit</button>
+    </form>
+    <h2>Update Student Form</h2>
+    <form id="updateForm" onsubmit="updateStudent(event)">
+        <label for="prn">PRN:</label><br>
+        <input type="text" id="prn" name="prn" required><br>
+        <label for="year">Year:</label><br>
+        <input type="text" id="year" name="year" required><br>
+        <label for="semester">Semester:</label><br>
+        <input type="text" id="semester" name="semester" required><br>
+        <label for="cgpa">CGPA:</label><br>
+        <input type="text" id="cgpa" name="cgpa" required><br>
+        <label for="mentoremail">Mentor Email:</label><br>
+        <input type="email" id="mentoremail" name="mentoremail" required><br><br>
+        <button type="submit">Update Student</button>
+    </form>
+
+    <h2>Update Mentor Data</h2>
+    <form id="updateMentorForm" onsubmit="updateMentor(event)">
+        <label for="mentorID">Mentor ID:</label><br>
+        <input type="text" id="mentorID" name="mentorID" required><br>
+        <div id="menteeFields">
+            <label>Mentees:</label><br>
+            <div id="menteeContainer">
+                <div class="mentee">
+                    <input type="text" name="mentees[]" required>
+                    <button type="button" onclick="removeMenteeField(this)">Remove Mentee</button>
+                </div>
+            </div>
+            <button type="button" onclick="addMenteeField()">Add Mentee</button>
+        </div>
+        <br>
+        <button type="submit">Update Mentor</button>
+    </form>
+
+    
+    <script>
+        async function login(event) {
+            event.preventDefault();
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+
+            try {
+                const response = await fetch("/api/v1/auth/login", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const data = await response.json();
+
+                if (data.token) {
+                    localStorage.setItem("token", data.token);
+                    document.getElementById("message").innerText = "Login successful!";
+                } else {
+                    document.getElementById("message").innerText = "Login failed: No token received";
+                }
+            } catch (error) {
+                document.getElementById("message").innerText = "Login failed: " + error.message;
+            }
+        }
+
+        async function updateStudent(event) {
+            event.preventDefault();
+            const token = localStorage.getItem("token");
+
+            const prn = document.getElementById("prn").value;
+            const year = document.getElementById("year").value;
+            const semester = document.getElementById("semester").value;
+            const cgpa = document.getElementById("cgpa").value;
+            const mentoremail = document.getElementById("mentoremail").value;
+
+            const data = {
+                prn: prn,
+                year: year,
+                semester: semester,
+                cgpa: cgpa,
+                mentoremail: mentoremail
+            };
+
+            try {
+                const response = await fetch("/api/v1/students/update", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${token}`
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (response.ok) {
+                    document.getElementById("message").innerText = "Student data updated successfully!";
+                } else {
+                    document.getElementById("message").innerText = "Failed to update student data.";
+                }
+            } catch (error) {
+                document.getElementById("message").innerText = "Error updating student data: " + error.message;
+            }
+        }
+        async function updateMentor(event) {
+            event.preventDefault();
+            const token = localStorage.getItem("token");
+            const mentorid = document.getElementById("mentorID").value;
+            const mentees = Array.from(document.getElementsByName("mentees[]")).map(input => input.value);
+
+            const data = {
+                mentorid: mentorid,
+                mentees: mentees
+            };
+
+            try {
+                const response = await fetch("/api/v1/mentors/updatementor", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${token}`
+                    },
+                    body: JSON.stringify(data)
+                });
+                console.log(response)
+                if (response.ok) {
+                    document.getElementById("message").innerText = "Mentor data updated successfully!";
+                } else {
+                    document.getElementById("message").innerText = "Failed to update mentor data.";
+                }
+            } catch (error) {
+                document.getElementById("message").innerText = "Error updating mentor data: " + error.message;
+            }
+        }
+
+        function addMenteeField() {
+            const menteeContainer = document.getElementById("menteeContainer");
+            const menteeField = document.createElement("div");
+            menteeField.classList.add("mentee");
+            menteeField.innerHTML = `<br><input type="text" name="mentees[]" required>
+                                      <button type="button" onclick="removeMenteeField(this)">Remove Mentee</button>`;
+            menteeContainer.appendChild(menteeField);
+        }
+
+        function removeMenteeField(button) {
+            const menteeField = button.parentNode;
+            menteeField.parentNode.removeChild(menteeField);
+        }
+        </script>
+        
+
+</body>
+</html>

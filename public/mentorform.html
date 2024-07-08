@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Mentor with Mentees</title>
+</head>
+<body>
+    <h2>Add Mentor with Mentees</h2>
+    <form action="/api/v1/mentors" method="POST" id="mentorForm">
+        <label for="mentorID" >Mentor ID:</label>
+        <input type="text" name="mentorID" required><br><br>
+
+        <label for="mentorName">Name:</label>
+        <input type="text" name="mentorName" required><br><br>
+
+        <div id="menteesContainer">
+            <!-- Initial input field for mentee -->
+            <label for="mentees">Mentee:</label><br><br>
+            <input type="text" name="mentees[]" placeholder="Mentee : 0"><br><br>
+        </div>
+
+        <button type="button" onclick="addMenteeInput()">Add Mentee</button>
+        <br><br>
+        <input type="submit" value="Submit">
+    </form>
+
+    <script>
+        var num = 1;
+        function addMenteeInput() {
+            const menteesContainer = document.getElementById('menteesContainer');
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.name = 'mentees[]';
+            input.placeholder = `mentee : ${num}`;
+            num++;
+            menteesContainer.appendChild(input);
+            menteesContainer.appendChild(document.createElement('br'));
+            menteesContainer.appendChild(document.createElement('br'));
+        }
+    </script>
+</body>
+</html>

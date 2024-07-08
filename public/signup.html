@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action = "/api/v1/signup" method="POST">
+        <label for = "prn" >Student PRN</label>
+        <input type="text" name="prn" /><br>
+        <!-- <label for = "mentorid" >MentorID</label>
+        <input type="text" name="mentorid" /><br> -->
+        <!-- <label for = "parentphone" >Parent Phone</label>
+        <input type="text" name="parentphone" /><br> -->
+
+        <label for = "email" >Email</label>
+        <input type="text" name="email" required/><br>
+        <label for = "password">Password</label>
+        <input type="password" name="password" required/>
+        <br>
+        <label for = "role"></label>
+        <input type="radio" name="role" value="student" />Student</input>
+        <input type="radio" name="role" value="mentor" >Mentor</input>
+        <input type="radio" name="role" value="parent" >Parent</input>
+        <br>
+        <input type="submit" value="Submit"/>
+    </form>
+</body>
+</html>

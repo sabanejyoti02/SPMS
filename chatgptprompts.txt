@@ -1,0 +1,7 @@
+I have three entities in my project, student, mentor, parent and admin. 
+by default admin should have all privledges. for parent only veiw his child progress 
+for student to view and upoload his own data for mentor to view and verify student 
+and his data. I have used node js express and firebase to  build this. right now 
+i only store data about student mentor. I have created api routes and defined controller 
+classes to access database and update but i havent implenmented any security. 
+how do i secure both my database and api endpoints and how do i assign specific levels of security to each entitiy
