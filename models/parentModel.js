@@ -43,13 +43,13 @@ async function addParentToDB(parent){
     return res;
 }
 
-async function updateParentInDB(parentphone, updatedData) {
-    const docRef = doc(db, "parents", String(parentphone));
+async function updateParentInDB(parentid, updatedData) {
+    const docRef = doc(db, "parents", String(parentid));
     const res = await setDoc(docRef, updatedData, { merge: true });
     return res;
 }
-async function deleteParentFromDB(parentphone) {
-    const docRef = doc(db, "parents", String(parentphone));
+async function deleteParentFromDB(parentid) {
+    const docRef = doc(db, "parents", String(parentid));
     await deleteDoc(docRef);
 }
 

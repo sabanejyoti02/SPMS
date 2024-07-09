@@ -7,6 +7,8 @@ const mentorRoutes = require("./routes/mentorRoutes");
 const parentRoutes = require("./routes/parentRoutes");
 const certificateRoutes = require("./routes/certificateRoutes");
 const projectRoutes = require("./routes/projectRoutes");
+const platformRoutes = require("./routes/platformRoutes");
+const eventRoutes = require("./routes/eventRoutes");
 const authRoute = require("./auth/authRoutes");
 
 const app = express();
@@ -20,6 +22,8 @@ app.use('/api/v1/mentors', mentorRoutes);
 app.use('/api/v1/parents', parentRoutes);
 app.use('/api/v1/certificates', certificateRoutes);
 app.use('/api/v1/projects', projectRoutes);
+app.use('/api/v1/platforms', platformRoutes);
+app.use('/api/v1/events', eventRoutes);
 app.use("/api/v1/auth", authRoute);
 
 app.get("/", (req, res) => {

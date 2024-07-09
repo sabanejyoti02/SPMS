@@ -62,7 +62,7 @@ const updateParent = async (req,res)=>{
         parent[String(key)] = req.body[key];
     }
     //console.log(student);
-    const re = await updateParentInDB(parent.parentphone,parent);
+    const re = await updateParentInDB(parent.parentid,parent);
     //console.log(re);
     var reply = { "success" : true,"Message" : "Parent data updated successfully","data" : parent};
     res.status(200).json(reply)
@@ -74,4 +74,24 @@ const updateParent = async (req,res)=>{
     }
 
 }
-module.exports = {getAllParents,getParent,addParent,updateParent};
+
+const deleteParent = async(req, res) => {
+    try {
+        const { parentid } = req.body;
+        console.log(typeof(projectid));
+        const result = await deleteProjectFromDB(parentid);
+        const successRes = {
+            success: true,
+            message: "Parent deleted Successfully!",
+        };
+        return res.status(200).json(successRes);
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({
+            error: "Internal Server Error",
+            details: error.message
+        });
+    }
+};
+
+module.exports = {getAllParents,getParent,addParent,updateParent,deleteParent};

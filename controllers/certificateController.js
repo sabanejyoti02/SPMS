@@ -99,7 +99,7 @@ const getCertificatesOfStudent = async (req, res) => {
         const successRes = {
             success: true,
             message: "Certificate got Successfully!",
-            data: studentemail
+            data: result
         };
         return res.status(200).json(successRes);
     } catch (error) {
